@@ -1,5 +1,7 @@
 import 'package:dynamic_dukan/constants/colors.dart';
+import 'package:dynamic_dukan/controllers/auth_controller.dart';
 import 'package:dynamic_dukan/views/screens/auth/register_screen.dart';
+import 'package:dynamic_dukan/views/widgets/custom_button.dart';
 import 'package:dynamic_dukan/views/widgets/custom_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,8 +9,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
+  LoginScreen({Key? key}) : super(key: key);
+  AuthController _authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                   style: GoogleFonts.roboto(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xFF6E7191))),
+                      color: primaryColor)),
               SizedBox(
                 height: 50.h,
               ),
@@ -51,8 +53,15 @@ class LoginScreen extends StatelessWidget {
               Form(
                   child: Column(
                 children: [
-                  CustomInputField(labelText: 'Email'),
-                  CustomInputField(labelText: 'Password'),
+                  CustomInputField(
+                    labelText: 'Email',
+                    textController: _authController.emailController,
+                  ),
+                  CustomInputField(
+                    labelText: 'Password',
+                    textController: _authController.passwordController,
+                    isPassword: true,
+                  ),
                   SizedBox(
                     height: 13.h,
                   ),
@@ -63,14 +72,14 @@ class LoginScreen extends StatelessWidget {
                           style: GoogleFonts.roboto(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xFF6E7191))),
+                              color: secondaryColor)),
                       InkWell(
                         onTap: () => Get.to(() => RegisterScreen()),
                         child: Text('Register ',
                             style: GoogleFonts.roboto(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xFF3267E3))),
+                                color: primaryColor)),
                       ),
                       SizedBox(
                         width: 20.w,
@@ -80,24 +89,11 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(
                     height: 13.h,
                   ),
-                  InkWell(
-                    onTap: () => {Get.snackbar('title', 'message')},
-                    child: Container(
-                      width: 358.w,
-                      padding: EdgeInsets.symmetric(vertical: 19.sp),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF3267E3),
-                        borderRadius: BorderRadius.circular(20.sp),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Login',
-                          style: GoogleFonts.roboto(
-                              color: Color(0xFFFCFCFC),
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ),
+                  CustomButton(
+                    btnLabel: 'Login',
+                    action: () {
+                      _authController.login();
+                    },
                   ),
                 ],
               ))

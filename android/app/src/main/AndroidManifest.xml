@@ -3,8 +3,11 @@
    <application
         android:label="dynamic_dukan"
         android:icon="@mipmap/ic_launcher">
-        <activity
-            android:name=".MainActivity"
+      
+        <meta-data android:name="com.google.android.geo.API_KEY"
+                  android:value="AIzaSyAaBv6mAmcwtxhzW9WDEJcc_11i6gGEQuI"/>
+            <activity
+                android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">833742582633-kmv4hfbg62gilr4keo5fshg007ca4j8l.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">833742582633</string>
+    <string name="google_api_key" translatable="false">AIzaSyDwo6Vm9HtXondoeWC-Rl8WR6T1MKX0ZMY</string>
+    <string name="google_app_id" translatable="false">1:833742582633:android:f117a0c8cdd67b968843f8</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDwo6Vm9HtXondoeWC-Rl8WR6T1MKX0ZMY</string>
+    <string name="google_storage_bucket" translatable="false">dynamic-dukaan-b15cc.appspot.com</string>
+    <string name="project_id" translatable="false">dynamic-dukaan-b15cc</string>
+</resources>

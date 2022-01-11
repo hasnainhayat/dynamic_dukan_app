@@ -4,7 +4,6 @@ class UserModel {
   UserModel(
       {this.userName,
       this.email,
-      this.shop,
       this.address,
       this.gender,
       this.mobileNumber,
@@ -12,21 +11,19 @@ class UserModel {
       this.userType,
       this.image});
 
-  factory UserModel.fromDocumentSnapshot(DocumentSnapshot doc) =>
-      UserModel(userName: doc['userName'],
+  factory UserModel.fromDocumentSnapshot(DocumentSnapshot doc) => UserModel(
+      userName: doc['userName'],
       email: doc['email'],
       mobileNumber: doc['mobileNumber'],
-      shop: doc['shop'],
       address: doc['address'],
-      gender: doc['gender']
-      
-      );
+      userReference: doc.reference,
+      gender: doc['gender'],
+      userType: doc['userType']);
 
   Map<String, dynamic> toMap() => {
         'image': image,
         'userName': userName,
         'email': email,
-        'shop': shop,
         'gender': gender,
         'mobileNumber': mobileNumber,
         'address': address,
@@ -35,7 +32,7 @@ class UserModel {
   String? image;
   String? userType;
   String? userName;
-  DocumentReference? shop;
+
   String? gender;
   String? mobileNumber;
   String? email;

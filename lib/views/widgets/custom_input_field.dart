@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomInputField extends StatelessWidget {
-  const CustomInputField({
-    Key? key,
-    this.isPassword,
-    required this.labelText,
-    required this.textController,
-  }) : super(key: key);
+  const CustomInputField(
+      {Key? key,
+      this.isPassword,
+      required this.labelText,
+      required this.textController,
+      this.value})
+      : super(key: key);
   final bool? isPassword;
   final labelText;
   final textController;
+  final value;
 
   @override
   Widget build(BuildContext context) {
