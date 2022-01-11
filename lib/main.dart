@@ -34,11 +34,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: RiderMapScreen(),
-      // // Buyer_Home(),
-      // TrackOrder(),
-      // NewOrders(),
-      // landingpage(),
+      home:
+          //  RiderMapScreen(),
+          // // // Buyer_Home(),
+          // // TrackOrder(),
+          // // NewOrders(),
+          landingpage(),
     );
   }
 }

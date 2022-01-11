@@ -16,6 +16,7 @@ class OrderController extends GetxController {
   AuthController authController = Get.put(AuthController());
   CartController _cartController = Get.put(CartController());
   List<ProductModel> orderItems = [];
+  List<OrderModel> orderList = [];
   placeOrder(List<CartModel> cartItems) async {
     var date = DateTime.now();
 
@@ -87,6 +88,22 @@ class OrderController extends GetxController {
   getShopOrders() {
     FirebaseFirestore.instance.collection('orders').where('shopRef',
         isEqualTo: ShopController().currentShop!.shopReference);
+  }
+
+  getAllOrders() async {
+    orderList.clear();
+    QuerySnapshot snaps = await FirebaseFirestore.instance
+        .collection('orders')
+        .where('buyerRef', isEqualTo: authController.currentUser!.userReference)
+        .get();
+
+    orderItems.clear();
+    await Future.forEach(snaps.docs, (DocumentSnapshot element) async {
+      OrderModel orderModel = OrderModel.fromDocumentSnapshot(element);
+      orderList.add(orderModel);
+    });
+    orderList.length;
+    update();
   }
 
   clearTextFields() {}

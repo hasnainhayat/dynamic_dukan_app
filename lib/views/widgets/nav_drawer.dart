@@ -1,5 +1,7 @@
 import 'package:dynamic_dukan/controllers/auth_controller.dart';
+import 'package:dynamic_dukan/views/screens/buyer/order_history.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NavDrawer extends StatefulWidget {
   @override
@@ -36,7 +38,7 @@ class _NavDrawerState extends State<NavDrawer> {
               leading: Icon(Icons.shopping_bag),
               title: new Text("Orders"),
               onTap: () {
-                Navigator.pop(context);
+                Get.to(Order_Screen());
               }),
           ListTile(
               leading: Icon(Icons.event_note_sharp),
