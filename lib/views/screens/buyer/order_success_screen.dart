@@ -26,22 +26,22 @@ class OrderSuccessScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 50),
-            TextButton(
-                onPressed: () {
-                  Get.to(TrackOrder());
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Text(
-                    'Track Order',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                )),
+            // TextButton(
+            //     onPressed: () {
+            //       Get.to(TrackOrder());
+            //     },
+            //     child: Container(
+            //       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+            //       decoration: BoxDecoration(
+            //           color: Colors.green,
+            //           borderRadius: BorderRadius.circular(10)),
+            //       child: Text(
+            //         'Track Order',
+            //         style: TextStyle(
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //     )),
             TextButton(
                 onPressed: () {
                   Get.offAll(Buyer_Home());

@@ -100,11 +100,12 @@ class _Buyer_HomeState extends State<Buyer_Home> {
         key: _scaffoldKey,
         drawer: NavDrawer(),
         appBar: AppBar(
+          backgroundColor: Colors.green,
           elevation: 0.0,
           leading: IconButton(
-            icon: Icon(Icons.person_outlined),
+            icon: Icon(Icons.menu),
             color: Colors.white,
-            tooltip: 'Profile',
+            tooltip: 'Menu',
             onPressed: () {
               _scaffoldKey.currentState!.openDrawer();
             },
@@ -172,7 +173,8 @@ class _Buyer_HomeState extends State<Buyer_Home> {
                               for (var data in categoryController.categories)
                                 InkWell(
                                   onTap: () async {
-                                    await shopController.getCategoryShops(data);
+                                    // await shopController.getCategoryShops(data);
+                                    categoryController.selectCategory(data);
                                     Get.to(CategoryShops());
                                   },
                                   child: Categories_Tiles(
@@ -354,12 +356,6 @@ class _Buyer_HomeState extends State<Buyer_Home> {
   }
 
   List<Widget> _buildActions() => <Widget>[
-        IconButton(
-          icon: Icon(Icons.search),
-          color: Colors.white,
-          tooltip: 'Search',
-          onPressed: () {},
-        ),
         IconButton(
           icon: Icon(Icons.shopping_bag_outlined),
           color: Colors.white,

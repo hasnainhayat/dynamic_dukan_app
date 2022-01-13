@@ -21,7 +21,10 @@ var shop;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // FirebaseAuth.instance.signOut();
+  // Get.to(LoginScreen());
   await _authController.getUserdata();
+
   shop = await FirebaseFirestore.instance
       .collection('shops')
       .doc(

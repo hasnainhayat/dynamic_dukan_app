@@ -2,6 +2,7 @@ import 'package:dynamic_dukan/constants/colors.dart';
 import 'package:dynamic_dukan/controllers/auth_controller.dart';
 import 'package:dynamic_dukan/controllers/product_controller.dart';
 import 'package:dynamic_dukan/controllers/shop_controller.dart';
+import 'package:dynamic_dukan/controllers/validation_controller.dart';
 import 'package:dynamic_dukan/views/screens/auth/register_screen.dart';
 import 'package:dynamic_dukan/views/widgets/custom_button.dart';
 import 'package:dynamic_dukan/views/widgets/custom_input_field.dart';
@@ -12,6 +13,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AddProductScreen extends StatelessWidget {
   ProductController productController = Get.put(ProductController());
+  GlobalKey<FormState> productFormKey = GlobalKey<FormState>();
+  ValidationController validationController = Get.put(ValidationController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Center(
@@ -37,6 +40,8 @@ class AddProductScreen extends StatelessWidget {
                     CustomInputField(
                       labelText: 'Product Name',
                       textController: productController.productNameController,
+                      validate: (value) =>
+                          validationController.validateName(value),
                     ),
                     CustomInputField(
                       labelText: 'Quantity',

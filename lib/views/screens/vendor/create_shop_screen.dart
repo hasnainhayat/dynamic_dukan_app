@@ -3,6 +3,7 @@ import 'package:dynamic_dukan/controllers/auth_controller.dart';
 import 'package:dynamic_dukan/controllers/category_controller.dart';
 import 'package:dynamic_dukan/controllers/map_controller%20copy.dart';
 import 'package:dynamic_dukan/controllers/shop_controller.dart';
+import 'package:dynamic_dukan/controllers/validation_controller.dart';
 import 'package:dynamic_dukan/models/category_model.dart';
 import 'package:dynamic_dukan/views/screens/auth/register_screen.dart';
 import 'package:dynamic_dukan/views/widgets/custom_button.dart';
@@ -17,7 +18,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class CreateShopScreen extends StatelessWidget {
   ShopController _shopController = Get.put(ShopController());
   MapController mapController = Get.put(MapController());
+  ValidationController validationController = Get.put(ValidationController());
   CategoryController categoryController = Get.put(CategoryController());
+  GlobalKey<FormState> shopFormKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     categoryController.getAllCategories();
@@ -44,204 +47,219 @@ class CreateShopScreen extends StatelessWidget {
                         height: 30.h,
                       ),
                       Form(
+                          key: shopFormKey,
                           child: Column(
-                        children: [
-                          CustomInputField(
-                            labelText: 'Shop Name',
-                            textController: _shopController.shopNameController,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Colors.black12)),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: DropdownButton(
-                                  isExpanded: true,
-                                  underline: SizedBox(),
-                                  value: shopController.categoryRef,
-                                  onChanged: (var val) {
-                                    shopController.categoryRef = val.toString();
-                                    shopController.update();
-                                  },
-                                  items: [
-                                    for (CategoryModel data
-                                        in categoryController.categories)
-                                      DropdownMenuItem(
-                                          value: data.categoryRef!.toString(),
-                                          child: Text(data.name!)),
-                                  ]),
-                            ),
-                          ),
-                          Container(
-                            width: Get.width,
-                            height: 160.h,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: Offset(
-                                      3, 10), // changes position of shadow
+                            children: [
+                              CustomInputField(
+                                labelText: 'Shop Name',
+                                textController:
+                                    _shopController.shopNameController,
+                                validate: (value) =>
+                                    validationController.validateName(value),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(color: Colors.black12)),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: DropdownButton(
+                                      isExpanded: true,
+                                      underline: SizedBox(),
+                                      value: shopController.categoryRef,
+                                      onChanged: (var val) {
+                                        shopController.categoryRef =
+                                            val.toString();
+                                        shopController.update();
+                                      },
+                                      items: [
+                                        for (CategoryModel data
+                                            in categoryController.categories)
+                                          DropdownMenuItem(
+                                              value:
+                                                  data.categoryRef!.toString(),
+                                              child: Text(data.name!)),
+                                      ]),
                                 ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: Get.width,
-                                  height: 150.h,
-                                  child: Stack(
-                                    children: [
-                                      GoogleMap(
-                                        initialCameraPosition: CameraPosition(
-                                          target:
-                                              shopController.myLocation != null
+                              ),
+                              Container(
+                                width: Get.width,
+                                height: 160.h,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          3, 10), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: Get.width,
+                                      height: 150.h,
+                                      child: Stack(
+                                        children: [
+                                          GoogleMap(
+                                            initialCameraPosition:
+                                                CameraPosition(
+                                              target: shopController
+                                                          .myLocation !=
+                                                      null
                                                   ? mapController
                                                       .markers[0].position
                                                   : mapController
                                                       .initialCameraPosition,
-                                          zoom: 15,
-                                        ),
-                                        mapType: MapType.normal,
-                                        // rotateGesturesEnabled: true,
-                                        // myLocationButtonEnabled: true,
-                                        myLocationEnabled: false,
-                                        // zoomGesturesEnabled: true,
-                                        // zoomControlsEnabled: true,
-                                        // compassEnabled: false,
-                                        onMapCreated: (controller) {
-                                          mapController.googleMapController =
-                                              controller;
-                                          mapController.markers;
-                                          mapController.getDeviceLocation();
-                                        },
-                                        onTap: (coordinate) {
-                                          shopController.mapVisibility = true;
-
-                                          shopController.islocationChanged =
-                                              true;
-                                          shopController.update();
-                                        },
-                                        markers: mapController.markers.toSet(),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          shopController.shopImage == null
-                              ? GestureDetector(
-                                  onTap: () {
-                                    shopController.imagePicker();
-                                  },
-                                  behavior: HitTestBehavior.translucent,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.3),
-                                          spreadRadius: 3,
-                                          blurRadius: 7,
-                                          offset: Offset(3,
-                                              10), // changes position of shadow
-                                        ),
-                                      ],
-                                    ),
-                                    height: 200.h,
-                                    width: double.maxFinite,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.image,
-                                          size: 50.sp,
-                                        ),
-                                        Text(
-                                          'Upload Shop Photo',
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.3),
-                                                spreadRadius: 3,
-                                                blurRadius: 7,
-                                                offset: Offset(10,
-                                                    3), // changes position of shadow
-                                              ),
-                                            ],
-                                          ),
-                                          height: 150.h,
-                                          width: double.maxFinite,
-                                          child: Image.network(
-                                            shopController.shopImage.toString(),
-                                            fit: BoxFit.cover,
-                                          )),
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        shopController.imagePicker();
-                                      },
-                                      behavior: HitTestBehavior.translucent,
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            'Edit',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 20.sp,
-                                              fontWeight: FontWeight.w500,
+                                              zoom: 15,
                                             ),
+                                            mapType: MapType.normal,
+                                            // rotateGesturesEnabled: true,
+                                            // myLocationButtonEnabled: true,
+                                            myLocationEnabled: false,
+                                            // zoomGesturesEnabled: true,
+                                            // zoomControlsEnabled: true,
+                                            // compassEnabled: false,
+                                            onMapCreated: (controller) {
+                                              mapController
+                                                      .googleMapController =
+                                                  controller;
+                                              mapController.markers;
+                                              mapController.getDeviceLocation();
+                                            },
+                                            onTap: (coordinate) {
+                                              shopController.mapVisibility =
+                                                  true;
+
+                                              shopController.islocationChanged =
+                                                  true;
+                                              shopController.update();
+                                            },
+                                            markers:
+                                                mapController.markers.toSet(),
                                           ),
-                                          Icon(
-                                            Icons.edit,
-                                            color: Color(0xff52a99a),
-                                          )
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
-                          SizedBox(
-                            height: 13.h,
-                          ),
-                          CustomButton(
-                            btnLabel: 'CreateShop',
-                            action: () {
-                              _shopController.createShop();
-                            },
-                          ),
-                        ],
-                      ))
+                              ),
+                              SizedBox(height: 10.h),
+                              shopController.shopImage == null
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        shopController.imagePicker();
+                                      },
+                                      behavior: HitTestBehavior.translucent,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.3),
+                                              spreadRadius: 3,
+                                              blurRadius: 7,
+                                              offset: Offset(3,
+                                                  10), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        height: 200.h,
+                                        width: double.maxFinite,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.image,
+                                              size: 50.sp,
+                                            ),
+                                            Text(
+                                              'Upload Shop Photo',
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withOpacity(0.3),
+                                                    spreadRadius: 3,
+                                                    blurRadius: 7,
+                                                    offset: Offset(10,
+                                                        3), // changes position of shadow
+                                                  ),
+                                                ],
+                                              ),
+                                              height: 150.h,
+                                              width: double.maxFinite,
+                                              child: Image.network(
+                                                shopController.shopImage
+                                                    .toString(),
+                                                fit: BoxFit.cover,
+                                              )),
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            shopController.imagePicker();
+                                          },
+                                          behavior: HitTestBehavior.translucent,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Edit',
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 20.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.edit,
+                                                color: Color(0xff52a99a),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                              SizedBox(
+                                height: 13.h,
+                              ),
+                              CustomButton(
+                                btnLabel: 'CreateShop',
+                                action: () {
+                                  // if (shopFormKey.currentState!.validate())
+                                  _shopController.createShop();
+                                },
+                              ),
+                            ],
+                          ))
                     ],
                   ),
                   if (shopController.mapVisibility)

@@ -51,6 +51,8 @@ dependencies:
   geolocator: ^8.0.0
   geocoding: ^2.0.1
   location: ^4.3.0
+  form_field_validator: ^1.1.0
+  form_validator: ^1.0.1
   flutter_polyline_points: ^1.0.0
   geoflutterfire: ^3.0.1
 dev_dependencies:

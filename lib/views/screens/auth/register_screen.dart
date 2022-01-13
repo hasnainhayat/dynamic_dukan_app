@@ -1,5 +1,6 @@
 import 'package:dynamic_dukan/constants/colors.dart';
 import 'package:dynamic_dukan/controllers/auth_controller.dart';
+import 'package:dynamic_dukan/controllers/validation_controller.dart';
 import 'package:dynamic_dukan/views/screens/auth/login_screen.dart';
 import 'package:dynamic_dukan/views/widgets/custom_button.dart';
 import 'package:dynamic_dukan/views/widgets/custom_input_field.dart';
@@ -11,6 +12,8 @@ import 'package:google_fonts/google_fonts.dart';
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({Key? key}) : super(key: key);
   AuthController _authController = Get.put(AuthController());
+  GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
+  ValidationController validationController = Get.put(ValidationController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,114 +53,129 @@ class RegisterScreen extends StatelessWidget {
                   height: 30.h,
                 ),
                 Form(
+                    key: signupFormKey,
                     child: Column(
-                  children: [
-                    CustomInputField(
-                      labelText: 'Name',
-                      textController: _authController.userNameController,
-                    ),
-                    CustomInputField(
-                      labelText: 'Email',
-                      textController: _authController.emailController,
-                    ),
-                    CustomInputField(
-                        labelText: 'Mobile',
-                        textController: _authController.mobileController),
-                    Padding(
-                      padding: EdgeInsets.all(10.sp),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'User Type:',
-                            style: TextStyle(fontSize: 20.sp),
-                          )),
-                    ),
-                    Row(
                       children: [
-                        InkWell(
-                          onTap: () => authController.selectUserType('buyer'),
-                          child: Container(
-                            padding: EdgeInsets.all(15.sp),
-                            margin: EdgeInsets.symmetric(horizontal: 10.sp),
-                            decoration: BoxDecoration(
-                                color: authController.userType == 'buyer'
-                                    ? primaryColor
-                                    : Colors.transparent,
-                                border: Border.all(color: primaryColor),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text('Buyer'),
-                          ),
+                        CustomInputField(
+                          labelText: 'Name',
+                          textController: _authController.userNameController,
+                          validate: (value) =>
+                              validationController.validateName(value),
                         ),
-                        InkWell(
-                          onTap: () => authController.selectUserType('vendor'),
-                          child: Container(
-                            padding: EdgeInsets.all(15.sp),
-                            margin: EdgeInsets.symmetric(horizontal: 10.sp),
-                            decoration: BoxDecoration(
-                                color: authController.userType == 'vendor'
-                                    ? primaryColor
-                                    : Colors.transparent,
-                                border: Border.all(color: primaryColor),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text('Vendor'),
-                          ),
+                        CustomInputField(
+                          labelText: 'Email',
+                          textController: _authController.emailController,
+                          validate: (value) =>
+                              validationController.validateEmail(value),
                         ),
-                        InkWell(
-                          onTap: () => authController.selectUserType('rider'),
-                          child: Container(
-                            padding: EdgeInsets.all(15.sp),
-                            margin: EdgeInsets.symmetric(horizontal: 10.sp),
-                            decoration: BoxDecoration(
-                                color: authController.userType == 'rider'
-                                    ? primaryColor
-                                    : Colors.transparent,
-                                border: Border.all(color: primaryColor),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text('Rider'),
-                          ),
+                        CustomInputField(
+                            labelText: 'Mobile',
+                            validate: (value) =>
+                                validationController.validateMobile(value),
+                            textController: _authController.mobileController),
+                        Padding(
+                          padding: EdgeInsets.all(10.sp),
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'User Type:',
+                                style: TextStyle(fontSize: 20.sp),
+                              )),
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 13.h,
-                    ),
-                    CustomInputField(
-                      labelText: 'Password',
-                      isPassword: true,
-                      textController: _authController.passwordController,
-                    ),
-                    SizedBox(
-                      height: 13.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text('Already Have an Account? ',
-                            style: GoogleFonts.roboto(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w400,
-                                color: secondaryColor)),
-                        InkWell(
-                          onTap: () => Get.back(),
-                          child: Text('Login ',
-                              style: GoogleFonts.roboto(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: primaryColor)),
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () =>
+                                  authController.selectUserType('buyer'),
+                              child: Container(
+                                padding: EdgeInsets.all(15.sp),
+                                margin: EdgeInsets.symmetric(horizontal: 10.sp),
+                                decoration: BoxDecoration(
+                                    color: authController.userType == 'buyer'
+                                        ? primaryColor
+                                        : Colors.transparent,
+                                    border: Border.all(color: primaryColor),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Text('Buyer'),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () =>
+                                  authController.selectUserType('vendor'),
+                              child: Container(
+                                padding: EdgeInsets.all(15.sp),
+                                margin: EdgeInsets.symmetric(horizontal: 10.sp),
+                                decoration: BoxDecoration(
+                                    color: authController.userType == 'vendor'
+                                        ? primaryColor
+                                        : Colors.transparent,
+                                    border: Border.all(color: primaryColor),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Text('Vendor'),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () =>
+                                  authController.selectUserType('rider'),
+                              child: Container(
+                                padding: EdgeInsets.all(15.sp),
+                                margin: EdgeInsets.symmetric(horizontal: 10.sp),
+                                decoration: BoxDecoration(
+                                    color: authController.userType == 'rider'
+                                        ? primaryColor
+                                        : Colors.transparent,
+                                    border: Border.all(color: primaryColor),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Text('Rider'),
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(
-                          width: 20.w,
-                        )
+                          height: 13.h,
+                        ),
+                        CustomInputField(
+                          labelText: 'Password',
+                          isPassword: true,
+                          validate: (value) =>
+                              validationController.validatePassword(value),
+                          textController: _authController.passwordController,
+                        ),
+                        SizedBox(
+                          height: 13.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('Already Have an Account? ',
+                                style: GoogleFonts.roboto(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: secondaryColor)),
+                            InkWell(
+                              onTap: () => Get.back(),
+                              child: Text('Login ',
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: primaryColor)),
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 14.h,
+                        ),
+                        CustomButton(
+                            action: () => {
+                                  if (signupFormKey.currentState!.validate())
+                                    _authController.register()
+                                },
+                            btnLabel: 'Register'),
                       ],
-                    ),
-                    SizedBox(
-                      height: 14.h,
-                    ),
-                    CustomButton(
-                        action: () => {_authController.register()},
-                        btnLabel: 'Register'),
-                  ],
-                ))
+                    ))
               ],
             );
           }),

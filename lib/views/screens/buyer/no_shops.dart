@@ -7,23 +7,26 @@ class NoShops extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green,
+        ),
         body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Center(
-          child: Icon(
-            Icons.warning_amber_sharp,
-            size: 200,
-            color: primaryColor,
-          ),
-        ),
-        Center(
-          child: Container(
-            child: Text('Currently There are no shops near you'),
-          ),
-        ),
-      ],
-    ));
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(
+              child: Icon(
+                Icons.warning_amber_sharp,
+                size: 200,
+                color: primaryColor,
+              ),
+            ),
+            Center(
+              child: Container(
+                child: Text('Currently There are no shops near you'),
+              ),
+            ),
+          ],
+        ));
   }
 }

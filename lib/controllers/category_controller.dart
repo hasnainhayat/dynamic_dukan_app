@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 class CategoryController extends GetxController {
   List<CategoryModel> categories = [];
+  CategoryModel? selectedCategory;
   getAllCategories() async {
     var snapshot =
         await FirebaseFirestore.instance.collection('categories').get();
@@ -11,6 +12,15 @@ class CategoryController extends GetxController {
     snapshot.docs.forEach((element) {
       categories.add(CategoryModel.fromDocumentSnapshot(element));
     });
+    update();
+  }
+
+  selectCategory(CategoryModel category) {
+    String id = category.categoryRef!.id;
+    DocumentReference categoryRef =
+        FirebaseFirestore.instance.doc('categories/$id');
+    selectedCategory = category;
+    selectedCategory!.categoryRef = categoryRef;
     update();
   }
 }

@@ -29,11 +29,13 @@ class ShopModel {
         'vendorRef': _authController.currentUser!.userReference,
         'location': location,
         'category': category,
+        'shopStatus': 'active'
       };
   String? image;
   String? shopName;
   DocumentReference? vendorRef;
   DocumentReference? shopReference;
   DocumentReference? category;
+  String? shopStatus;
   var location;
 }

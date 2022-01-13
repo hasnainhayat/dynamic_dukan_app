@@ -10,15 +10,17 @@ import 'package:get/get.dart';
 
 class CategoryShops extends StatelessWidget {
   CategoryShops({Key? key}) : super(key: key);
-  // CategoryController _categoryController = Get.put(CategoryController());
-  // ShopController shopController = Get.put(ShopController(), permanent: true);
+  CategoryController _categoryController = Get.put(CategoryController());
+  ShopController shopController = Get.put(ShopController(), permanent: true);
   @override
   Widget build(BuildContext context) {
+    shopController.getAllShops();
     return Scaffold(
       appBar: AppBar(
         title: Text(''),
       ),
       body: GetBuilder<ShopController>(builder: (shopController) {
+        print(_categoryController.selectedCategory!.categoryRef);
         return Column(
           children: [
             SizedBox(
@@ -30,16 +32,42 @@ class CategoryShops extends StatelessWidget {
                         crossAxisCount: 2, crossAxisSpacing: 4),
                     itemCount: shopController.nearbyShops.length,
                     itemBuilder: (context, index) {
-                      return NearbyShops_Tile(
-                        color: Color(0xffDFECF8),
-                        action: () {
-                          shopController
-                              .selectShop(shopController.nearbyShops[index]);
-                          Get.to(ShoppingScreen());
-                        },
-                        title: '${shopController.nearbyShops[index].shopName}',
-                        assetPath: '${shopController.nearbyShops[index].image}',
+                      print(shopController.nearbyShops[0].category);
+                      return Container(
+                        child: (shopController.nearbyShops[index].category ==
+                                _categoryController
+                                    .selectedCategory!.categoryRef)
+                            ? NearbyShops_Tile(
+                                color: Color(0xffDFECF8),
+                                action: () {
+                                  shopController.selectShop(
+                                      shopController.nearbyShops[index]);
+                                  Get.to(ShoppingScreen());
+                                },
+                                title:
+                                    '${shopController.nearbyShops[index].shopName}',
+                                assetPath:
+                                    '${shopController.nearbyShops[index].image}',
+                              )
+                            : SizedBox(),
                       );
+                      print('${shopController.nearbyShops.length}');
+
+                      // shopController.nearbyShops[index].category ==
+                      //         _categoryController.selectedCategory!.categoryRef
+                      //     ? NearbyShops_Tile(
+                      //         color: Color(0xffDFECF8),
+                      //         action: () {
+                      //           shopController.selectShop(
+                      //               shopController.nearbyShops[index]);
+                      //           Get.to(ShoppingScreen());
+                      //         },
+                      //         title:
+                      //             '${shopController.nearbyShops[index].shopName}',
+                      //         assetPath:
+                      //             '${shopController.nearbyShops[index].image}',
+                      //       )
+                      //     : SizedBox();
                     }),
               ),
             )

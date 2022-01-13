@@ -12,8 +12,10 @@ class NearbyController extends GetxController {
 
   getNearByShops() async {
     _locationController.checkPosition();
-    QuerySnapshot snap =
-        await FirebaseFirestore.instance.collection('shops').get();
+    QuerySnapshot snap = await FirebaseFirestore.instance
+        .collection('shops')
+        .where('shopStatus', isEqualTo: 'active')
+        .get();
 
     nearbyShops.clear();
     Future.forEach(snap.docs, (DocumentSnapshot element) {

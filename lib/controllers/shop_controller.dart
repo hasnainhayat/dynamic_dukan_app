@@ -20,7 +20,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 class ShopController extends GetxController {
   TextEditingController shopNameController = TextEditingController();
   ShopModel? currentShop;
-  String? categoryRef;
+  DocumentReference? categoryRef;
   bool locationSelected = false;
   bool mapVisibility = false;
   List<ShopModel> nearbyShops = [];
@@ -35,25 +35,26 @@ class ShopController extends GetxController {
     update();
   }
 
-  Future getCategoryShops(CategoryModel category) async {
-    var snapshot = await shopCollection
-        .where('category', isEqualTo: category.categoryRef)
-        .get();
-    // nearbyShops.clear();
-    snapshot.docs.forEach((element) {
-      nearbyShops.add(ShopModel.fromDocumentSnapshot(element));
-    });
-    update();
-  }
+  // Future getCategoryShops(CategoryModel category) async {
+  //   var snapshot = await shopCollection
+  //       .where('category', isEqualTo: category.categoryRef.toString())
+  //       .get();
+  //   // nearbyShops.clear();
+  //   print(snapshot.docs.length);
+  //   snapshot.docs.forEach((element) {
+  //     nearbyShops.add(ShopModel.fromDocumentSnapshot(element));
+  //   });
+  //   update();
+  // }
 
   createShop() async {
-    DocumentReference docRef = FirebaseFirestore.instance.doc(categoryRef!);
+    // DocumentReference docRef = FirebaseFirestore.instance.doc(categoryRef!);
     ;
     ShopModel newShop = ShopModel(
         image: '',
         shopName: shopNameController.text,
         location: myLocation!.data,
-        category: docRef);
+        category: categoryRef);
     try {
       await shopCollection
           .doc('shop-${FirebaseAuth.instance.currentUser!.uid}')
@@ -76,7 +77,8 @@ class ShopController extends GetxController {
   }
 
   getAllShops() async {
-    var snapshot = await shopCollection.get();
+    var snapshot =
+        await shopCollection.where('shopStatus', isEqualTo: 'active').get();
     nearbyShops.clear();
     snapshot.docs.forEach((element) {
       nearbyShops.add(ShopModel.fromDocumentSnapshot(element));
