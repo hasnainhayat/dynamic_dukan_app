@@ -68,17 +68,16 @@ class CreateShopScreen extends StatelessWidget {
                                       isExpanded: true,
                                       underline: SizedBox(),
                                       value: shopController.categoryRef,
-                                      onChanged: (var val) {
-                                        shopController.categoryRef =
-                                            val.toString();
+                                      onChanged: (dynamic val) {
+                                        print("vall: $val");
+                                        shopController.categoryRef = val;
                                         shopController.update();
                                       },
                                       items: [
                                         for (CategoryModel data
                                             in categoryController.categories)
                                           DropdownMenuItem(
-                                              value:
-                                                  data.categoryRef!.toString(),
+                                              value: data.categoryRef,
                                               child: Text(data.name!)),
                                       ]),
                                 ),

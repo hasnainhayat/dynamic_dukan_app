@@ -11,22 +11,29 @@ class NearbyController extends GetxController {
   List<ShopModel> nearbyShops = [];
 
   getNearByShops() async {
-    _locationController.checkPosition();
+    await _locationController.checkPosition();
     QuerySnapshot snap = await FirebaseFirestore.instance
         .collection('shops')
         .where('shopStatus', isEqualTo: 'active')
         .get();
 
     nearbyShops.clear();
-    Future.forEach(snap.docs, (DocumentSnapshot element) {
+    await Future.forEach(snap.docs, (DocumentSnapshot element) {
       if (element.get('location') != null) {
+        print("loctest : ${element.get('location')['geopoint'].latitude}");
+        print("loctest : ${element.get('location')['geopoint'].longitude}");
+        print("loctest : ${_locationController.currentLat.value}");
+        print("loctest : ${_locationController.currentLng.value}");
+
         double distance = (Geolocator.distanceBetween(
                 _locationController.currentLat.value,
                 _locationController.currentLng.value,
                 element.get('location')['geopoint'].latitude,
                 element.get('location')['geopoint'].longitude) /
             1000);
-
+        print('Distance: $distance');
+        // print(element);
+        // nearbyShops.add(ShopModel.fromDocumentSnapshot(element));
         if (distance <= 10) {
           print(element);
           nearbyShops.add(ShopModel.fromDocumentSnapshot(element));
