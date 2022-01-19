@@ -308,7 +308,6 @@ class _Shopping_CartState extends State<Shopping_Cart> {
                         _orderController.placeOrder(_cartController.cartItems);
                         cartController.cartItems.clear();
                         cartController.update();
-                        Get.to(OrderSuccessScreen());
                       },
                     ),
                   ),

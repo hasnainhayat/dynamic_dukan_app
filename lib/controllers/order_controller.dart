@@ -6,6 +6,7 @@ import 'package:dynamic_dukan/models/cart_model.dart';
 import 'package:dynamic_dukan/models/order_model.dart';
 import 'package:dynamic_dukan/models/product_model.dart';
 import 'package:dynamic_dukan/models/user_model.dart';
+import 'package:dynamic_dukan/views/screens/buyer/order_success_screen.dart';
 import 'package:dynamic_dukan/views/screens/vendor/vendor_home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,12 @@ class OrderController extends GetxController {
   List<ProductModel> orderItems = [];
   List<OrderModel> orderList = [];
   placeOrder(List<CartModel> cartItems) async {
+    if (cartItems.length <= 0) {
+      Get.snackbar(
+          'No Items', 'Please add products to cart before placing order');
+
+      return;
+    }
     var date = DateTime.now();
 
     cartItems.forEach((element) async {
@@ -65,6 +72,7 @@ class OrderController extends GetxController {
     CartController().update();
     cartItems.clear();
     update();
+    Get.to(OrderSuccessScreen());
   }
 
   getOrderItems() async {

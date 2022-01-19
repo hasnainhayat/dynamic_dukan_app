@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_dukan/controllers/auth_controller.dart';
+import 'package:dynamic_dukan/controllers/network_controller.dart';
+import 'package:dynamic_dukan/no_internet_screen.dart';
 import 'package:dynamic_dukan/views/screens/auth/login_screen.dart';
 import 'package:dynamic_dukan/views/screens/buyer/buyer_home.dart';
 import 'package:dynamic_dukan/views/screens/buyer/order_success_screen.dart';
@@ -17,7 +19,7 @@ import 'package:get/get.dart';
 
 AuthController _authController = Get.put(AuthController());
 var shop;
-
+NetworkController networkController = Get.put(NetworkController());
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -53,11 +55,13 @@ landingpage() {
         375,
         812,
       ),
-      builder: () => _authController.currentUser != null
-          ? _authController.currentUser!.userType == 'vendor'
-              ? !shop.exists
-                  ? CreateShopScreen()
-                  : VendorHomeScreen()
-              : Buyer_Home()
-          : LoginScreen());
+      builder: () => Obx(() => networkController.isConnected.value
+          ? _authController.currentUser != null
+              ? _authController.currentUser!.userType == 'vendor'
+                  ? !shop.exists
+                      ? CreateShopScreen()
+                      : VendorHomeScreen()
+                  : Buyer_Home()
+              : LoginScreen()
+          : NoInternet()));
 }

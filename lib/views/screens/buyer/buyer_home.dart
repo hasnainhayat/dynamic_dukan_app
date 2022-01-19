@@ -135,28 +135,28 @@ class _Buyer_HomeState extends State<Buyer_Home> {
                               style: GoogleFonts.varelaRound(
                                   fontSize: 20, fontWeight: FontWeight.w600),
                             ),
-                            FlatButton(
-                              onPressed: () {},
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Color(0xffE0E6EE),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10),
-                                  ),
-                                ),
-                                child: Text(
-                                  'Explore All',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey[700],
-                                  ),
-                                ),
-                              ),
-                            )
+                            // FlatButton(
+                            //   onPressed: () {},
+                            //   child: Container(
+                            //     padding: EdgeInsets.all(10),
+                            //     decoration: BoxDecoration(
+                            //       color: Color(0xffE0E6EE),
+                            //       borderRadius: BorderRadius.only(
+                            //         topLeft: Radius.circular(10),
+                            //         topRight: Radius.circular(10),
+                            //         bottomLeft: Radius.circular(10),
+                            //       ),
+                            //     ),
+                            //     child: Text(
+                            //       'Explore All',
+                            //       style: GoogleFonts.varelaRound(
+                            //         fontSize: 15,
+                            //         fontWeight: FontWeight.w600,
+                            //         color: Colors.grey[700],
+                            //       ),
+                            //     ),
+                            //   ),
+                            // )
                           ],
                         ),
                       ),
@@ -318,29 +318,38 @@ class _Buyer_HomeState extends State<Buyer_Home> {
                         children: [
                           GetBuilder<NearbyController>(
                               builder: (nearbyController) {
-                            return Container(
-                              height: 200,
-                              child: ListView.separated(
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) =>
-                                      NearbyShops_Tile(
-                                        color: Color(0xffDFECF8),
-                                        action: () {
-                                          shopController.selectShop(
-                                              nearbyController
-                                                  .nearbyShops[index]);
-                                          Get.to(ShoppingScreen());
-                                        },
-                                        title:
-                                            '${nearbyController.nearbyShops[index].shopName}',
-                                        assetPath:
-                                            '${nearbyController.nearbyShops[index].image}',
-                                      ),
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(width: 20),
-                                  itemCount:
-                                      nearbyController.nearbyShops.length),
-                            );
+                            return nearbyController.isLoadind
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : nearbyController.nearbyShops.length > 0
+                                    ? Container(
+                                        height: 200,
+                                        child: ListView.separated(
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index) =>
+                                                NearbyShops_Tile(
+                                                  color: Color(0xffDFECF8),
+                                                  action: () {
+                                                    shopController.selectShop(
+                                                        nearbyController
+                                                                .nearbyShops[
+                                                            index]);
+                                                    Get.to(ShoppingScreen());
+                                                  },
+                                                  title:
+                                                      '${nearbyController.nearbyShops[index].shopName}',
+                                                  assetPath:
+                                                      '${nearbyController.nearbyShops[index].image}',
+                                                ),
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    SizedBox(width: 20),
+                                            itemCount: nearbyController
+                                                .nearbyShops.length),
+                                      )
+                                    : Center(
+                                        child: Text('No shop in this area'));
                           })
                         ],
                       ),

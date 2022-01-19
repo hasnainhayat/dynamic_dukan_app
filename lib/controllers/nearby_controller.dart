@@ -9,8 +9,11 @@ class NearbyController extends GetxController {
   LocationController _locationController = Get.put(LocationController());
 
   List<ShopModel> nearbyShops = [];
+  bool isLoadind = false;
 
   getNearByShops() async {
+    isLoadind = true;
+    update();
     await _locationController.checkPosition();
     QuerySnapshot snap = await FirebaseFirestore.instance
         .collection('shops')
@@ -31,16 +34,14 @@ class NearbyController extends GetxController {
                 element.get('location')['geopoint'].latitude,
                 element.get('location')['geopoint'].longitude) /
             1000);
-        print('Distance: $distance');
-        // print(element);
-        // nearbyShops.add(ShopModel.fromDocumentSnapshot(element));
+
         if (distance <= 10) {
           print(element);
           nearbyShops.add(ShopModel.fromDocumentSnapshot(element));
         }
       }
     });
-
+    isLoadind = false;
     update();
   }
 }
